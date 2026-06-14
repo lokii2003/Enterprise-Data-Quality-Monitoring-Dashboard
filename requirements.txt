@@ -1,0 +1,13 @@
+# ── Dashboard (Streamlit Cloud) ───────────────────────────────────────────────
+pandas
+sqlalchemy
+streamlit
+plotly
+python-dotenv
+
+# ── Local pipeline only (not needed for dashboard) ────────────────────────────
+# pip install these locally to run the full pipeline:
+# matplotlib        (offline chart generation)
+# pymysql           (MySQL backend — not needed with SQLite)
+# great-expectations (advanced validation framework)
+# slack-sdk         (Slack alert integration)

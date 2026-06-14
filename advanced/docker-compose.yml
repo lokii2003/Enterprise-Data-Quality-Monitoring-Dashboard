@@ -1,0 +1,75 @@
+# ============================================================
+# docker-compose.yml
+# Phase 11 — Spin up MySQL + Pipeline together
+#
+# Usage:
+#   docker compose up -d          (start both services)
+#   docker compose down           (stop and remove containers)
+#   docker compose logs pipeline  (view pipeline output)
+# ============================================================
+
+version: "3.9"
+
+services:
+
+  # ── MySQL Database ───────────────────────────────────────────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: dq_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: data_quality
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql/setup_database.sql:/docker-entrypoint-initdb.d/setup_database.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Data Quality Pipeline ────────────────────────────────────────────────────
+  pipeline:
+    build:
+      context: ..
+      dockerfile: advanced/Dockerfile
+    container_name: dq_pipeline
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_NAME: data_quality
+    volumes:
+      - ../logs:/app/logs
+      - ../reports:/app/reports
+    command: >
+      sh -c "python scripts/load_data.py &&
+             python scripts/data_quality_checks.py &&
+             python scripts/email_alerts.py"
+
+  # ── Streamlit Dashboard ──────────────────────────────────────────────────────
+  dashboard:
+    build:
+      context: ..
+      dockerfile: advanced/Dockerfile
+    container_name: dq_dashboard
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_NAME: data_quality
+    ports:
+      - "8501:8501"
+    command: streamlit run scripts/dashboard_streamlit.py --server.address=0.0.0.0
+
+volumes:
+  mysql_data:

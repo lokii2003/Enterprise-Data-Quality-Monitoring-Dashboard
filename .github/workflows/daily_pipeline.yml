@@ -1,0 +1,57 @@
+name: Daily Data Quality Pipeline
+
+on:
+  schedule:
+    - cron: "0 9 * * *"   # Every day at 9 AM UTC
+  workflow_dispatch:        # Also allows manual runs from the Actions tab
+
+# Required so the Action can commit and push back to the repo
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install pandas sqlalchemy matplotlib python-dotenv
+
+      - name: Generate daily batch
+        run: python scripts/generate_data.py --mode daily
+
+      - name: Run data quality checks
+        run: python scripts/data_quality_checks.py
+
+      - name: Regenerate offline charts
+        run: python scripts/generate_report_charts.py
+
+      - name: Commit updated database and charts
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data_quality.db raw_data/customer_data.csv \
+                  screenshots/issue_breakdown.png \
+                  screenshots/dq_score.png \
+                  screenshots/dashboard_preview.png || true
+          if git diff --cached --quiet; then
+            echo "Nothing to commit — no changes detected"
+          else
+            git commit -m "chore: daily pipeline run $(date -u '+%Y-%m-%d')"
+            git push origin main
+            echo "Committed and pushed successfully"
+          fi
