@@ -56,6 +56,12 @@ Production-grade **automated data quality pipeline** that detects, logs, and ale
 
 ---
 
+## Dashboard Overview
+
+![Dashboard](screenshots/dashboard.1.png)
+![Dashboard](screenshots/dashboard.2.png)
+
+
 ## 🏗️ Architecture
 
 ```mermaid
