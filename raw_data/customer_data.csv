@@ -1184,3 +1184,15 @@ customer_id,name,email,age,load_date
 14,Uma,uma21@yahoo.com,65,2026-06-24
 15,Arjun,arjun97@yahoo.com,57,2026-06-24
 16,Wendy,wendy94@hotmail.com,74,2026-06-24
+1,Rohan,rohan29@yahoo.com,74.0,2026-06-25
+2,Sara,sara21@gmail.com,25.0,2026-06-25
+3,Ananya,ananya91@outlook.com,57.0,2026-06-25
+4,Vikram,vikram99gmail.com,36.0,2026-06-25
+5,Ananya,ananya84@yahoo.com,,2026-06-25
+6,Uma,uma76@yahoo.com,59.0,2026-06-25
+7,Wendy,wendy68@yahoo.com,42.0,2026-06-25
+8,Mia,mia83@hotmail.com,47.0,2026-06-25
+9,Harsh,harsh80@outlook.com,30.0,2026-06-25
+10,Zara,zara20@hotmail.com,51.0,2026-06-25
+11,Kevin,kevin85@outlook.com,27.0,2026-06-25
+12,Tanya,,66.0,2026-06-25
