@@ -2767,3 +2767,15 @@ customer_id,name,email,age,load_date
 11,Emma,emma32@hotmail.com,43.0,2026-09-16
 12,Tanya,tanya86@proton.me,35.0,2026-09-16
 13,Kevin,kevin40@hotmail.com,24.0,2026-09-16
+1,Zara,zara76@yahoo.com,35,2026-09-17
+2,Olivia,,38,2026-09-17
+3,Zara,,32,2026-09-17
+4,Aisha,aisha30@outlook.com,74,2026-09-17
+5,Olivia,olivia65@proton.me,71,2026-09-17
+6,Aisha,aisha77gmail.com,25,2026-09-17
+7,Jaya,jaya19@yahoo.com,19,2026-09-17
+8,Rahul,rahul37@proton.me,19,2026-09-17
+9,Ishaan,ishaan61@hotmail.com,72,2026-09-17
+10,Harsh,harsh33@outlook.com,42,2026-09-17
+11,Vikram,vikram6@gmail.com,64,2026-09-17
+12,Ishaan,ishaan74@gmail.com,46,2026-09-17
